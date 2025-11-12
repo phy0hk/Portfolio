@@ -1,0 +1,11 @@
+@import "tailwindcss";
+
+@theme {
+    @keyframes blink {
+        50% {
+            opacity: 0;
+        }
+    }
+    --animate-blink: blink 1s infinite;
+    --font-pixelify: "Pixelify Sans", sans-serif;
+}
