@@ -1,21 +1,27 @@
+import type { displayProps } from "../config/global_types";
+
 const DisplayOutput = ({
     username,
     os_name,
     value,
-    output_type,
+    currentPath,
+    type,
+    element,
 }: DisplayOutputProps) => {
+    console.log(element);
     return (
         <p className="whitespace-pre-wrap">
-            {output_type === "history"
-                ? `[${username}@${os_name} ~] ${value}`
-                : `${value}`}
+            {type === "history"
+                ? `[${username}@${os_name} ${currentPath} ] ${value}`
+                : value
+                  ? value
+                  : element}
         </p>
     );
 };
-interface DisplayOutputProps {
+interface DisplayOutputProps extends displayProps {
     username: string;
     os_name: string;
-    value: string;
-    output_type: "history" | "output";
+    currentPath: string;
 }
 export default DisplayOutput;

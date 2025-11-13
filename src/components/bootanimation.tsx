@@ -93,7 +93,7 @@ const BootAnimation = ({ isBooted, onBooted }: BootAnimationProps) => {
             if (currentIndex === bootSequence.length && !isBooted) {
                 onBooted(true);
             }
-            setDelay(Math.ceil(Math.random() * 1000));
+            setDelay(Math.ceil(Math.random() * 100));
         }, delay);
         return () => clearInterval(interval);
     }, [display]);

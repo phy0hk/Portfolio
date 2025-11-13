@@ -1,2 +1,2 @@
-export const username = "phyo";
+export const username = "root";
 export const os_name = "archlinux";

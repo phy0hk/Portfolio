@@ -13,5 +13,7 @@ export const HandleKeydown = (
         backspaceEvent();
     } else if (e.key === "Enter") {
         submitEvent();
+    } else if (e.key === "Delete") {
+        deleteEvent();
     }
 };

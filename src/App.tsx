@@ -1,6 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import { HandleKeydown } from "./functions/keyboard_events/keydown_event";
-import { CommandHandler } from "./functions/commands/handler";
+import {
+    CommandHandler,
+    SpecialCommandHandler,
+} from "./functions/commands/handler";
 import { os_name, username } from "./config/system_info";
 import type { displayProps } from "./config/global_types";
 import DisplayOutput from "./components/display_output";
@@ -9,9 +12,15 @@ function App() {
     const [display, setDisplay] = useState<displayProps[]>([]);
     const [history, setHistory] = useState<string[]>([]);
     const [input, setInput] = useState<string>("");
-    const [isBooted, setIsBooted] = useState<boolean>(false);
 
+    const [isBooted, setIsBooted] = useState<boolean>(false);
+    const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+    const [currentPath, setCurrentPath] = useState<string>("/");
+
+    //references
     const inputRef = useRef<string>("");
+    const historyRef = useRef<string[]>([]);
+
     //fetch keyboard events
     useEffect(() => {
         document.body.addEventListener("keydown", handleTheKeydownHandler);
@@ -23,11 +32,13 @@ function App() {
         };
     }, []);
 
+    //these things will put the data to callable
     useEffect(() => {
         inputRef.current = input;
-        console.log(input);
     }, [input]);
-
+    useEffect(() => {
+        historyRef.current = history;
+    }, [history]);
     //All Event handler
     const handleTheKeydownHandler = (e: KeyboardEvent) => {
         HandleKeydown(
@@ -49,8 +60,21 @@ function App() {
         setHistory((prev) => [...prev, inputRef.current]);
         CommandHandler(
             inputRef.current,
+            historyRef.current,
             (res) =>
                 setDisplay((prev) => [...prev, { type: "output", value: res }]),
+            (newDisplay) => {
+                setDisplay(newDisplay);
+            },
+        );
+        SpecialCommandHandler(
+            inputRef.current,
+            historyRef.current,
+            (res) =>
+                setDisplay((prev) => [
+                    ...prev,
+                    { type: "element", element: res },
+                ]),
             (newDisplay) => {
                 setDisplay(newDisplay);
             },
@@ -77,12 +101,14 @@ function App() {
                         <DisplayOutput
                             username={username}
                             os_name={os_name}
-                            output_type={item.type}
+                            currentPath={currentPath}
+                            type={item.type}
                             value={item.value}
+                            element={item.element}
                         />
                     ))}
                     <div className="flex flex-row gap-1">
-                        <p>{`[${username}@${os_name} ~]`}</p>
+                        <p>{`[${username}@${os_name} ${currentPath} ]`}</p>
                         <div className="h-full relative">
                             <span className="whitespace-pre-wrap">{input}</span>
                             <span className="absolute bottom-0 h-0.5 bg-white w-2 animate-blink"></span>
