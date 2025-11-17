@@ -1,14 +1,14 @@
 export interface DisplayDataType {
-    id: number;
-    display_type: string;
-    display_content: string | React.ReactNode;
+  id?: number;
+  display_type: string;
+  display_content: string;
 }
 export interface HistoryDataType {
-    id: number;
-    command: string;
-    timestamp: Date;
+  id: number;
+  command: string;
+  timestamp: Date;
 }
 export interface UserInputType {
-    id: number;
-    input: string;
+  id: number;
+  input: string;
 }
