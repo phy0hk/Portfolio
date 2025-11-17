@@ -2,15 +2,13 @@ import { user_info } from "../utils/config/portfolio_info";
 import { sysInfo } from "../utils/config/sys_info";
 import { useSelector } from "react-redux";
 import type { RootState } from "../utils/states/store";
-import { useEffect } from "react";
+import { KeyDownEventHandler } from "../applications/event_handler";
 
 const CommandInput = () => {
     const inputValue = useSelector(
         (state: RootState) => state.global.inputValue,
     );
-    useEffect(() => {
-        console.log(inputValue);
-    }, [inputValue]);
+
     return (
         <div>
             <span className="flex flex-row items-end h-auto gap-1">
@@ -23,6 +21,7 @@ const CommandInput = () => {
                     ></span>
                 </p>
             </span>
+            <KeyDownEventHandler />
         </div>
     );
 };
