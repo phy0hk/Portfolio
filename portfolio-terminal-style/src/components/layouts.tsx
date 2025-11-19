@@ -1,16 +1,16 @@
-import { user_info } from "../utils/config/portfolio_info";
-import { sysInfo } from "../utils/config/sys_info";
-
 export const BasicDisplayLayout = ({
   children,
   input,
+  sysInfo,
 }: {
   children?: React.ReactNode;
   input: string;
+  sysInfo: string;
 }) => {
+  console.log(sysInfo);
   return (
     <div className="flex flex-col">
-      <p>{`[ ${sysInfo.hostname}@${user_info.username} ${user_info.path} ]$ ${input}`}</p>
+      <p>{`${sysInfo} ${input}`}</p>
       {children}
     </div>
   );
