@@ -12,7 +12,6 @@ const CommandInput = () => {
         (state: RootState) => state.input.fetchInputEvent,
     );
     const hostnameAndUsername = `[ ${sysInfo.hostname}@${user_info.username} ${user_info.path} ]$`;
-    console.log(hostnameAndUsername.length);
     return (
         <div className="relative">
             <span className="flex flex-row items-end h-auto gap-1">
@@ -26,7 +25,13 @@ const CommandInput = () => {
                 </p>
             </span>
             {fetchInputEvent ? (
-                <KeyDownEventHandler currentInput={inputValue} />
+                <>
+                    <KeyDownEventHandler currentInput={inputValue} />
+                    <input
+                        type="text"
+                        className="w-[calc(100%-var(--spacing)*30)] h-full opacity-0 absolute top-0 right-0 sm:hidden bg-white"
+                    />
+                </>
             ) : (
                 ""
             )}

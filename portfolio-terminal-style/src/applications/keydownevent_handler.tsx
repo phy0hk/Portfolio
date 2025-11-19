@@ -5,6 +5,7 @@ import { CommandHandler } from "./command_handler";
 import { useLiveQuery } from "dexie-react-hooks";
 import type { HistoryDataType } from "../utils/types/db_types";
 import { getHistory } from "../utils/localstorage/read_opertaions";
+import { setDisplayMode } from "../utils/states/desktop_slice";
 
 const EventHandler = ({ currentInput }: EventHandlerProps) => {
     const currInput = useRef<string>("");
@@ -60,10 +61,27 @@ const EventHandler = ({ currentInput }: EventHandlerProps) => {
                 }
             }
         };
-
+        const ChangeDesktopMode = () => {
+            const input = currInput.current.toLowerCase();
+            const command = input.split(" ");
+            const parameter = command[1];
+            console.log(input);
+            switch (parameter) {
+                case "desktop":
+                    dispatch(setDisplayMode("desktop_mode"));
+                    return "";
+                default:
+                    CommandHandler("invalid", input);
+                    return "";
+            }
+        };
         switch (inputEvent) {
             case "Enter":
-                CommandHandler(currInput.current);
+                if (currInput.current.startsWith("start")) {
+                    ChangeDesktopMode();
+                } else {
+                    CommandHandler(currInput.current);
+                }
                 historyPointerPosition.current = 0;
                 setIsInHistory(false);
                 dispatch(setInputValue(""));

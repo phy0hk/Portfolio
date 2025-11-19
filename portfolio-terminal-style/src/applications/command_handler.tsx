@@ -7,12 +7,12 @@ import {
 import { clearDisplay } from "../utils/localstorage/delete_operations";
 import { getHistory } from "../utils/localstorage/read_opertaions";
 
-export const CommandHandler = (input: string) => {
+export const CommandHandler = (input: string, InvalidCommand: string = "") => {
     const command = input.split(" ");
     push_history(input);
     switch (command[0]) {
-        case "whoareyou":
-            WhoAreYou(input);
+        case "aboutyou":
+            AboutYou(input);
             break;
         case "clear":
             Clear();
@@ -23,15 +23,15 @@ export const CommandHandler = (input: string) => {
         case "help":
             HelpCommand(input);
             break;
-        case "exit":
-            Exit(input);
+        case "invalid":
+            InvalidParameter(InvalidCommand);
             break;
         default:
             CommandNotFound(input);
             break;
     }
 };
-const WhoAreYou = (input: string) => {
+const AboutYou = (input: string) => {
     push_display(
         "display",
         elementToHtml(
@@ -41,6 +41,7 @@ const WhoAreYou = (input: string) => {
         ),
     );
 };
+
 const Clear = () => {
     clearDisplay();
 };
@@ -65,7 +66,16 @@ const CommandNotFound = (input: string) => {
         elementToHtml(<BasicDisplayLayout input={input} />),
     );
 };
-
+const InvalidParameter = (input: string) => {
+    push_display(
+        "display",
+        elementToHtml(
+            <BasicDisplayLayout input={input}>
+                <p>Invalid Parameter Contain</p>
+            </BasicDisplayLayout>,
+        ),
+    );
+};
 const HelpCommand = (input: string) => {
     push_display(
         "display",
@@ -74,7 +84,7 @@ const HelpCommand = (input: string) => {
                 <>
                     <p>Available commands:</p>
                     <ul>
-                        <li>whoareyou</li>
+                        <li>aboutyou</li>
                         <li>clear</li>
                         <li>history</li>
                         <li>help</li>

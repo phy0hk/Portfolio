@@ -12,7 +12,7 @@ const initialState: InputState = {
     isInSpecialCommand: false,
 };
 const InputSlice = createSlice({
-    name: "global",
+    name: "input",
     initialState,
     reducers: {
         setInputValue(state, action: PayloadAction<string>) {
