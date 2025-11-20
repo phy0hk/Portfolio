@@ -1,9 +1,8 @@
 export interface PositionType {
-  x: number;
-  y: number;
-  z: number;
+    x: number;
+    y: number;
 }
 export interface ElementSizeType {
-  width: number;
-  height: number;
+    width: number;
+    height: number;
 }
