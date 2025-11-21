@@ -3,6 +3,7 @@ import type { RootState } from "../../utils/states/store";
 import AppFrame from "./app_frame/app_frame";
 import Terminal from "../../applications/terminal";
 import type { AppInfo } from "../../utils/states/desktop_slice";
+import Browser from "../../applications/browser";
 
 const OpenedAppsContainer = () => {
     const CurrentRunningApp = useSelector(
@@ -26,6 +27,8 @@ const Apps = ({ app }: { app: AppInfo }) => {
     switch (app.name) {
         case "Terminal":
             return <Terminal processInfo={app} />;
+        case "Browser":
+            return <Browser processInfo={app} />;
     }
 };
 export default OpenedAppsContainer;

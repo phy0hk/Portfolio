@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 import type { RootState } from "../utils/states/store";
 import { user_info } from "../utils/config/portfolio_info";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { AppInfo } from "../utils/states/desktop_slice";
 import EventHandler from "./terminal/event_handler";
 const Terminal = ({ processInfo }: { processInfo: AppInfo }) => {
@@ -36,7 +36,7 @@ const Terminal = ({ processInfo }: { processInfo: AppInfo }) => {
     }, []);
     return (
         <div
-            ref={}
+            ref={container}
             className={`w-full h-full flex flex-col p-2 overflow-auto ${processInfo.zindex == 999 ? "bg-black" : ""}`}
             id={`terminal-${processInfo.processId}`}
         >
