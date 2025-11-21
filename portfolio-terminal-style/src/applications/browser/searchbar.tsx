@@ -1,5 +1,4 @@
 import { ArrowRight } from "lucide-react";
-import { useState } from "react";
 
 const SearchBar = ({ onSearch, inputValue, onInputChange }: SearchBarProps) => {
     return (
