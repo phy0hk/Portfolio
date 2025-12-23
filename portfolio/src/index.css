@@ -1,0 +1,18 @@
+@import "tailwindcss";
+:root {
+    --font-color: var(--color-zinc-50);
+}
+
+@theme {
+    --animate-blink: blink 1s infinite ease-in-out;
+    @keyframes blink {
+        50% {
+            opacity: 0;
+        }
+        100% {
+            opacity: 1;
+        }
+    }
+    --color-tprimary: var(--font-color);
+    --font-noto-sans: "Noto Sans", sans-serif;
+}

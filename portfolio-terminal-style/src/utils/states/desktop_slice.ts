@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import type { ElementSizeType, PositionType } from "../types/utils_type";
-import { Zindex_Rearranger } from "../func/zindex_rearranger";
+// import { Zindex_Rearranger } from "../func/zindex_rearranger";
 
 interface DesktopState {
     DisplayMode: DisplayModeType;
