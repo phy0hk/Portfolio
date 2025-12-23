@@ -1,35 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import type {
-    ElementSizeType,
-    PositionType,
-} from "../../models/storage/utils_type";
+    AppInfo,
+    DesktopState,
+    DisplayModeType,
+    PopUpMenuType,
+    TerminalStates,
+} from "@/models/storage/slice/desktop_slice_types";
 // import { Zindex_Rearranger } from "../func/zindex_rearranger";
 
-interface DesktopState {
-    DisplayMode: DisplayModeType;
-    PopUpMenu: PopUpMenuType;
-    AppList: AppInfo[];
-    CurrentRunningApp: AppInfo[];
-    TerminalStates: TerminalStates[];
-}
-export type DisplayModeType = "default" | "desktop_mode";
-export type PopUpMenuType = "none" | "application";
-export interface AppInfo {
-    id: number;
-    name: string;
-    icon?: string;
-    state?: "default" | "minimized" | "maximized";
-    processId?: number;
-    position: PositionType;
-    size: ElementSizeType;
-    zindex: number;
-}
-export interface TerminalStates {
-    processId?: number;
-    history: string[];
-    display: string[];
-}
 const initialState: DesktopState = {
     DisplayMode: "default",
     PopUpMenu: "none",

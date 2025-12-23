@@ -1,4 +1,4 @@
-import { setPopUpMenu } from "@/storage/redux/desktop_slice";
+import { setPopUpMenu } from "@/storage/redux/desktop_states/desktop_slice";
 import type { RootState } from "@/storage/redux/store";
 import { useDispatch, useSelector } from "react-redux";
 

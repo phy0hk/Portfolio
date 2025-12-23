@@ -1,27 +1,15 @@
+import App from "./app";
+import useAppListView from "@/hooks/popup_menus/application_menu/app_list_view_hooks";
+
 const AppListView = ({ searchValue }: { searchValue: string }) => {
-    const AppList = useSelector((state: RootState) => state.display.AppList);
-    const [filteredAppList, setFilteredAppList] = useState<AppInfo[]>([]);
-    useEffect(() => {
-        function Filter() {
-            if (searchValue !== "") {
-                setFilteredAppList(
-                    AppList.filter((item) =>
-                        item.name
-                            .toLowerCase()
-                            .includes(searchValue.toLowerCase()),
-                    ),
-                );
-            } else {
-                setFilteredAppList(AppList);
-            }
-        }
-        Filter();
-    }, [searchValue, AppList]);
+    const applistViewHook = useAppListView(searchValue);
     return (
         <div className="h-full flex flex-col gap-2 pt-5 overflow-auto">
-            {filteredAppList.map((item, index) => (
+            {applistViewHook.filteredAppList.map((item, index) => (
                 <App App={item} key={index} />
             ))}
         </div>
     );
 };
+
+export default AppListView;

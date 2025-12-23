@@ -1,26 +1,19 @@
 import usePopup from "@/hooks/popup_hooks";
-import type { PopUpMenuType } from "@/storage/redux/desktop_slice";
+import AutoSwitchMenu from "./popup_menus/application_menu/auto_switch_menu";
 
 const PopUp = () => {
-    const popupHook = usePopup();
+    const { popupMenu, HandlePopupClose } = usePopup();
     return (
         <div
-            className={`w-full h-full absolute flex inset-0 items-center justify-center p-3 ${PopUpMenu === "none" ? "hidden" : ""} z-1100 `}
+            className={`w-full h-full absolute flex inset-0 items-center justify-center p-3 ${popupMenu === "none" ? "hidden" : ""} z-1100 `}
         >
             <button
                 className="w-full h-full absolute"
-                onClick={popupHook.HandlePopupClose}
+                onClick={HandlePopupClose}
             />
-            <AutoSwitchMenu currentMenu={popupHook.popupMenu} />
+            <AutoSwitchMenu currentMenu={popupMenu} />
         </div>
     );
 };
-const AutoSwitchMenu = ({ currentMenu }: { currentMenu: PopUpMenuType }) => {
-    switch (currentMenu) {
-        case "application":
-            return <ApplicationMenu />;
-        default:
-            return "";
-    }
-};
+
 export default PopUp;

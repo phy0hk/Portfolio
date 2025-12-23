@@ -72,7 +72,8 @@ const App = ({ App }: { App: AppInfo }) => {
         console.log(newProcessId);
         const openApp: AppInfo = {
             ...App,
-            position: { x: 0, y: 0, z: 999 },
+            position: { x: 0, y: 0 },
+            zindex: 999,
             processId: newProcessId,
         };
         dispatch(setPopUpMenu("none"));
