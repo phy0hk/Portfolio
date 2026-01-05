@@ -12,8 +12,7 @@ const useAppHooks = (App: AppInfo) => {
     const [appIcon, setAppIcon] = useState<string | undefined>(undefined);
 
     const HandleOnClick = () => {
-        const newProcessId = Math.floor(Math.random() * 100);
-        console.log(newProcessId);
+        const newProcessId = Math.floor(Math.random() * 100) + Date.now();
         const openApp: AppInfo = {
             ...App,
             position: { x: 0, y: 0 },

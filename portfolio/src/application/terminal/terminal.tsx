@@ -1,39 +1,13 @@
+import useTerminalEvent from "@/hooks/applications/terminal/terminal_events_hooks";
+import useTerminal from "@/hooks/applications/terminal/terminal_hooks";
 import type { AppInfo } from "@/models/storage/slice/desktop_slice_types";
-import type { RootState } from "@/storage/redux/store";
-import { useEffect, useRef, useState } from "react";
-import { useSelector } from "react-redux";
+import { useRef } from "react";
 
 const Terminal = ({ processInfo }: { processInfo: AppInfo }) => {
-    const user_info = { username: "user" };
-    const sysInfo = useSelector((state: RootState) => state.input.sysInfo);
-    const hostnameAndUsername = `[ ${sysInfo.hostname}@${user_info.username} /] $ `;
-    const [inputValue, setInputValue] = useState<string>("");
     const container = useRef<HTMLDivElement>(null);
-    const terminalState = useSelector((state: RootState) =>
-        state.display.TerminalStates.find(
-            (item) => processInfo.processId == item.processId,
-        ),
-    );
-    const handleOnChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-        const currentValue = e.currentTarget.value;
-        if (
-            currentValue.startsWith(hostnameAndUsername) &&
-            !currentValue.endsWith("\n")
-        ) {
-            const newInput = currentValue.replace(hostnameAndUsername, "");
-            setInputValue(newInput);
-        }
-    };
-    useEffect(() => {
-        const TempElement = document.getElementById(
-            `terminal-${processInfo.processId}`,
-        );
-        TempElement?.scrollTo({
-            top: TempElement.scrollHeight,
-            behavior: "smooth",
-        });
-        console.log(TempElement?.scrollHeight);
-    }, []);
+    const { terminalState, inputValue, HandleOnChange, shellPrompt, sysInfo } =
+        useTerminal(processInfo);
+    useTerminalEvent(container, inputValue, terminalState, sysInfo);
     return (
         <div
             ref={container}
@@ -47,21 +21,10 @@ const Terminal = ({ processInfo }: { processInfo: AppInfo }) => {
                 ></div>
             ))}
             <textarea
-                className="w-full min-h-[300px] outline-none resize-none"
-                value={hostnameAndUsername + inputValue}
-                onChange={handleOnChange}
+                className="w-full min-h-75 outline-none resize-none text-wrap"
+                value={shellPrompt + inputValue}
+                onChange={HandleOnChange}
             />
-            {processInfo.zindex === 999 ? (
-                <EventHandler
-                    sysInfo={hostnameAndUsername}
-                    processInfo={processInfo}
-                    inputCommand={inputValue}
-                    terminalState={terminalState}
-                    clearInput={() => setInputValue("")}
-                />
-            ) : (
-                ""
-            )}
         </div>
     );
 };

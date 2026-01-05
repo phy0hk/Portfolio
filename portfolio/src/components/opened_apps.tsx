@@ -2,8 +2,9 @@ import type { RootState } from "@/storage/redux/store";
 import { useSelector } from "react-redux";
 import AppFrame from "./app_frame/app_frame";
 import type { AppInfo } from "@/models/storage/slice/desktop_slice_types";
+import Terminal from "@/application/terminal/terminal";
 
-const OpenedAppsContainer = () => {
+const OpenedApps = () => {
     const CurrentRunningApp = useSelector(
         (state: RootState) => state.display.CurrentRunningApp,
     );
@@ -25,8 +26,8 @@ const Apps = ({ app }: { app: AppInfo }) => {
     switch (app.name) {
         case "Terminal":
             return <Terminal processInfo={app} />;
-        case "Browser":
-            return <Browser processInfo={app} />;
+        // case "Browser":
+        //     return <Browser processInfo={app} />;
     }
 };
-export default OpenedAppsContainer;
+export default OpenedApps;
