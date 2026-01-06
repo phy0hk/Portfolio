@@ -1,5 +1,3 @@
-import type { ElementSizeType, PositionType } from "../utils_type";
-
 export interface DesktopState {
     DisplayMode: DisplayModeType;
     PopUpMenu: PopUpMenuType;
@@ -13,8 +11,6 @@ export interface AppInfo {
     name: string;
     icon?: string;
     state?: "default" | "minimized" | "fullscreen";
-    processId: number;
-    position: PositionType;
-    size: ElementSizeType;
+    processId: string;
     zindex: number;
 }

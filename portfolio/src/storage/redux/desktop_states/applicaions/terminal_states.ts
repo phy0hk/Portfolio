@@ -9,7 +9,7 @@ const initialState: AllTerminalStates = {
     TerminalsState: [],
 };
 const reducers = {
-    NewTerminal(state: AllTerminalStates, action: PayloadAction<number>) {
+    NewTerminal(state: AllTerminalStates, action: PayloadAction<string>) {
         state.TerminalsState.push({
             processId: action.payload,
             display: [],

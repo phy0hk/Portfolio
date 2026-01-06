@@ -7,7 +7,7 @@ const SearchBar = ({ applicationMenuHook }: SearchBarProps) => {
     return (
         <div className="w-full h-12">
             <input
-                className="w-full h-full outline-none rounded  bg-zinc-900/40 px-4"
+                className="w-full h-full rounded focus:outline focus:outline-zinc-700  bg-zinc-900/40 px-4"
                 type="text"
                 placeholder="Search Apps"
                 onChange={applicationMenuHook.OnSearchChange}

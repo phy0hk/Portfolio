@@ -2,7 +2,7 @@ export interface AllTerminalStates {
     TerminalsState: TerminalStates[];
 }
 export interface TerminalStates {
-    processId: number;
+    processId: string;
     history: string[];
     display: string[];
 }

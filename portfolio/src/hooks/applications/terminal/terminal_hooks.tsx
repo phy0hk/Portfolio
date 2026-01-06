@@ -13,6 +13,7 @@ const useTerminal = (processInfo: AppInfo) => {
             (item) => processInfo.processId == item.processId,
         ),
     );
+
     const HandleOnChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         const currentValue = e.currentTarget.value;
         if (
@@ -31,8 +32,7 @@ const useTerminal = (processInfo: AppInfo) => {
             top: TempElement.scrollHeight,
             behavior: "smooth",
         });
-        console.log(TempElement?.scrollHeight);
-    }, []);
+    });
 
     return { terminalState, inputValue, HandleOnChange, shellPrompt, sysInfo };
 };

@@ -11,6 +11,7 @@ const useTerminalEvent = (
     terminalState?: TerminalStates,
     sysInfo?: SystemInfo,
 ) => {
+    const user_info = { username: "root" };
     const dispatch = useDispatch();
     const localTerminalState = useRef<TerminalStates>(terminalState);
     const HandleKeyDownEvent = (e: KeyboardEvent) => {
@@ -24,7 +25,7 @@ const useTerminalEvent = (
         }
     };
     const EnterSubmitHandler = () => {
-        const commandHistory = `${sysInfo} ${input}`;
+        const commandHistory = `[ ${sysInfo?.hostname}@${user_info.username} /] $ ${input}`;
         if (!terminalState) return;
         // This will handle the clear command
         if (input.split(" ")[0] === "clear") {
@@ -54,6 +55,7 @@ const useTerminalEvent = (
                 commandHistory,
             ],
         };
+        if (!input) return;
         dispatch(UpdateTerminalState(tempTerminalState));
         clearInputValue();
     };
@@ -64,7 +66,7 @@ const useTerminalEvent = (
         return () => {
             tempContainer.removeEventListener("keydown", HandleKeyDownEvent);
         };
-    }, []);
+    });
     // Watch Terminal State
     useEffect(() => {
         localTerminalState.current = terminalState;

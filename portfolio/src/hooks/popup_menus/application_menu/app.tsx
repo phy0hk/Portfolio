@@ -1,4 +1,5 @@
 import type { AppInfo } from "@/models/storage/slice/desktop_slice_types";
+import { NewTerminal } from "@/storage/redux/desktop_states/applicaions/terminal_states";
 import {
     openNewApp,
     setPopUpMenu,
@@ -10,17 +11,26 @@ import { useDispatch } from "react-redux";
 const useAppHooks = (App: AppInfo) => {
     const dispatch = useDispatch();
     const [appIcon, setAppIcon] = useState<string | undefined>(undefined);
-
+    const generateProcessId = () =>
+        crypto.randomUUID?.() ?? `${Date.now()}-${Math.random()}`;
     const HandleOnClick = () => {
-        const newProcessId = Math.floor(Math.random() * 100) + Date.now();
+        const newProcessId = generateProcessId();
         const openApp: AppInfo = {
             ...App,
-            position: { x: 0, y: 0 },
             zindex: 999,
             processId: newProcessId,
         };
         dispatch(setPopUpMenu("none"));
         dispatch(openNewApp(openApp));
+        InitializeSpecificApp(openApp);
+    };
+
+    const InitializeSpecificApp = (App: AppInfo) => {
+        switch (App.name) {
+            case "Terminal":
+                dispatch(NewTerminal(App.processId));
+                break;
+        }
     };
 
     useEffect(() => {

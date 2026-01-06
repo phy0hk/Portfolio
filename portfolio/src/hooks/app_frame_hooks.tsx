@@ -59,15 +59,16 @@ export const useAppFrameMove = (
         if (!appFrame) return;
         const rect = appFrame.getBoundingClientRect();
         const { x, y } = rect;
-        framePosition.current = { x, y };
+        framePosition.current = { x: x - 8, y: y - 56 };
     });
 
     const HandleMouseDown = (e: React.MouseEvent) => {
-        startPos.current = { x: e.clientX, y: e.clientY };
         initialElementPos.current = {
             x: framePosition.current.x,
             y: framePosition.current.y,
         };
+        startPos.current = { x: e.clientX, y: e.clientY };
+
         window.addEventListener("mousemove", HandleMouseMove);
         window.addEventListener("mouseup", HandleMouseUp);
     };
@@ -119,7 +120,7 @@ export const useAppFrameMove = (
     const CloseApp = () => {
         if (!appFrame) return;
         animate(appFrame, {
-            easing: "easeOutQuad",
+            easing: "easeInOut",
             opacity: [1, 0],
             duration: 100,
             onComplete: () => dispatch(closeApp(processInfo)),
@@ -136,7 +137,6 @@ export const useAppFrameMove = (
 };
 
 export const useAppFrameResize = (
-    processInfo: AppInfo,
     appFrameRef: React.RefObject<HTMLDivElement | null>,
 ) => {
     const resizePosition = useRef<ResizePosition | null>(null);
@@ -147,14 +147,12 @@ export const useAppFrameResize = (
     const appFrame = appFrameRef.current;
 
     useEffect(() => {
-        console.log("useAppFrameMove");
         if (!appFrame) return;
         const rect = appFrame.getBoundingClientRect();
         const { x, y } = rect;
         const { width, height } = rect;
         framePosition.current = { x, y };
         currentSize.current = { width, height };
-        console.log(width, height);
     });
 
     const HandleResize = (position: ResizePosition, e: React.MouseEvent) => {
@@ -176,52 +174,53 @@ export const useAppFrameResize = (
         const deltaY = startPos.current.y - e.clientY;
         const newPos = { ...framePosition.current };
         const newSize = { ...currentSize.current };
+        const animationDuration = 10;
         switch (resizePosition.current) {
             case "top":
-                newHeight += deltaY;
-                if (newHeight > 480) {
-                    newPos.y -= deltaY;
+                newSize.height += deltaY;
+                if (newSize.height > 480) {
+                    newPos.y -= deltaY + 56;
+                    if (!appFrame) return;
+                    animate(appFrame, {
+                        y: newPos.y,
+                        ...newSize,
+                        duration: animationDuration,
+                    });
                 }
                 break;
             case "bottom":
                 e.stopPropagation();
-                newHeight -= deltaY;
+                newSize.height -= deltaY;
+                if (!appFrame) return;
+                animate(appFrame, {
+                    ...newSize,
+                    duration: animationDuration,
+                });
                 break;
             case "left":
-                newWidth += deltaX;
-                if (newWidth > 480) {
-                    newPos.x -= deltaX;
+                newSize.width += deltaX;
+                if (newSize.width > 480) {
+                    newPos.x -= deltaX + 8;
+                    if (!appFrame) return;
+                    animate(appFrame, {
+                        x: newPos.x,
+                        ...newSize,
+                        duration: animationDuration,
+                    });
                 }
                 break;
             case "right":
                 e.stopPropagation();
-                newWidth -= deltaX;
+                newSize.width -= deltaX;
+                if (!appFrame) return;
+                animate(appFrame, {
+                    ...newSize,
+                    duration: animationDuration,
+                });
                 break;
             default:
                 console.log("Not a position to be resize");
         }
-        if (!appFrame) return;
-        animate(appFrame, {
-            x: newXpos,
-            y: newYpos,
-            width: newWidth,
-            height: newHeight,
-            duration: 100,
-        });
-        // const updatedProcessInfo: AppInfo = {
-        //     ...processInfo,
-        //     position: {
-        //         x: newXpos,
-        //         y: newYpos,
-        //     },
-        //     size: {
-        //         width: newWidth,
-        //         height: newHeight,
-        //     },
-        // };
-        // if (updatedProcessInfo !== processInfo) {
-        //     dispatch(updateAppState(updatedProcessInfo));
-        // }
     };
 
     return { HandleResize };

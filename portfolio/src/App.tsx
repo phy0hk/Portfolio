@@ -8,6 +8,7 @@ function App() {
         <div className="w-full h-screen relative p-2 overflow-hidden flex flex-col text-tprimary">
             {/*Background wallpaper */}
             <Taskbar />
+
             <PopUp />
             <img
                 src={wallpaper}

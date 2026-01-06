@@ -7,7 +7,7 @@ const App = ({ App }: { App: AppInfo }) => {
     return (
         <button
             onClick={HandleOnClick}
-            className="w-full h-13 p-3 flex flex-row gap-3 items-center rounded hover:bg-zinc-900/20 max-md:focus:bg-zinc-900/20"
+            className="w-full h-13 p-3 flex flex-row gap-3 items-center rounded hover:bg-zinc-800 max-md:focus:bg-zinc-900/20"
         >
             <span className="rounded-full bg-zinc-400 p-2">
                 {appIcon ? <img src={appIcon} /> : <Image />}

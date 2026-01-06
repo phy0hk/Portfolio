@@ -18,19 +18,15 @@ const AppFrame = ({
         processInfo,
         currentOpenedAppList,
     );
-    const { HandleResize } = useAppFrameResize(processInfo, appFrameRef);
+    const { HandleResize } = useAppFrameResize(appFrameRef);
     return (
         <div
-            className={`absolute min-w-120 min-h-120 flex flex-col
-              bg-zinc-900/70 backdrop-blur-lg rounded-xl border border-zinc-900
+            className={`absolute min-w-120 min-h-120 h-120 flex flex-col
+              bg-zinc-900/70 rounded-xl border border-zinc-800
               z-0 ${processInfo.state === "minimized" ? "hidden" : ""}
              overflow-hidden`}
             ref={appFrameRef}
             style={{
-                // left: processInfo.position.x + "px",
-                // top: processInfo.position.y + "px",
-                // width: `${processInfo.size.width}px`,
-                // height: `${processInfo.size.height}px`,
                 zIndex: processInfo.zindex,
             }}
             onMouseDown={HandleRearranger}
