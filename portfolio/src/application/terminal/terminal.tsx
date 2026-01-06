@@ -5,9 +5,9 @@ import { useRef } from "react";
 
 const Terminal = ({ processInfo }: { processInfo: AppInfo }) => {
     const container = useRef<HTMLDivElement>(null);
-    const { terminalState, inputValue, HandleOnChange, shellPrompt, sysInfo } =
+    const { terminalState, HandleOnChange, shellPrompt } =
         useTerminal(processInfo);
-    useTerminalEvent(container, inputValue, terminalState, sysInfo);
+    useTerminalEvent(container, shellPrompt, terminalState);
     return (
         <div
             ref={container}
@@ -22,7 +22,7 @@ const Terminal = ({ processInfo }: { processInfo: AppInfo }) => {
             ))}
             <textarea
                 className="w-full min-h-75 outline-none resize-none text-wrap"
-                value={shellPrompt + inputValue}
+                value={shellPrompt + terminalState?.inputState.inputValue}
                 onChange={HandleOnChange}
             />
         </div>

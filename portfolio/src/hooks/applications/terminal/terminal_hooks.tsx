@@ -1,13 +1,19 @@
 import type { AppInfo } from "@/models/storage/slice/desktop_slice_types";
+import { UpdateTerminalInput } from "@/storage/redux/desktop_states/applicaions/terminal_states";
 import type { RootState } from "@/storage/redux/store";
-import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 const useTerminal = (processInfo: AppInfo) => {
     const user_info = { username: "root" };
-    const sysInfo = useSelector((state: RootState) => state.input.sysInfo);
-    const shellPrompt = `[ ${sysInfo.hostname}@${user_info.username} /] $ `;
-    const [inputValue, setInputValue] = useState<string>("");
+    const dispatch = useDispatch();
+    const sysInfo = useSelector(
+        (state: RootState) =>
+            state.terminalApp.TerminalsState.find(
+                (item) => item.processId === processInfo.processId,
+            )?.inputState.sysInfo,
+    );
+    const shellPrompt = `[ ${sysInfo?.hostname}@${user_info.username} /] $ `;
     const terminalState = useSelector((state: RootState) =>
         state.terminalApp.TerminalsState.find(
             (item) => processInfo.processId == item.processId,
@@ -21,7 +27,12 @@ const useTerminal = (processInfo: AppInfo) => {
             !currentValue.endsWith("\n")
         ) {
             const newInput = currentValue.replace(shellPrompt, "");
-            setInputValue(newInput);
+            dispatch(
+                UpdateTerminalInput({
+                    processId: processInfo.processId,
+                    inputValue: newInput,
+                }),
+            );
         }
     };
     useEffect(() => {
@@ -34,6 +45,6 @@ const useTerminal = (processInfo: AppInfo) => {
         });
     });
 
-    return { terminalState, inputValue, HandleOnChange, shellPrompt, sysInfo };
+    return { terminalState, HandleOnChange, shellPrompt, sysInfo };
 };
 export default useTerminal;

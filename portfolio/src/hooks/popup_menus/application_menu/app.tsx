@@ -1,5 +1,5 @@
+import useRelatedProcesses from "@/hooks/applications/related_process";
 import type { AppInfo } from "@/models/storage/slice/desktop_slice_types";
-import { NewTerminal } from "@/storage/redux/desktop_states/applicaions/terminal_states";
 import {
     openNewApp,
     setPopUpMenu,
@@ -13,6 +13,7 @@ const useAppHooks = (App: AppInfo) => {
     const [appIcon, setAppIcon] = useState<string | undefined>(undefined);
     const generateProcessId = () =>
         crypto.randomUUID?.() ?? `${Date.now()}-${Math.random()}`;
+    const RelatedProcess = useRelatedProcesses(App);
     const HandleOnClick = () => {
         const newProcessId = generateProcessId();
         const openApp: AppInfo = {
@@ -22,15 +23,7 @@ const useAppHooks = (App: AppInfo) => {
         };
         dispatch(setPopUpMenu("none"));
         dispatch(openNewApp(openApp));
-        InitializeSpecificApp(openApp);
-    };
-
-    const InitializeSpecificApp = (App: AppInfo) => {
-        switch (App.name) {
-            case "Terminal":
-                dispatch(NewTerminal(App.processId));
-                break;
-        }
+        RelatedProcess.Initialize(newProcessId);
     };
 
     useEffect(() => {

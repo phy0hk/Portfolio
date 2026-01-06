@@ -14,6 +14,7 @@ import { Zindex_Rearranger } from "@/utils/zindex_rearranger";
 import { animate } from "animejs";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
+import useRelatedProcesses from "./applications/related_process";
 
 export const useAppFrame = (
     processInfo: AppInfo,
@@ -54,7 +55,7 @@ export const useAppFrameMove = (
     const initialElementPos = useRef<PositionType>({ x: 0, y: 0 });
     const startPos = useRef<PositionType>({ x: 0, y: 0 });
     const dispatch = useDispatch();
-
+    const RelatedProcesses = useRelatedProcesses(processInfo);
     useEffect(() => {
         if (!appFrame) return;
         const rect = appFrame.getBoundingClientRect();
@@ -125,6 +126,7 @@ export const useAppFrameMove = (
             duration: 100,
             onComplete: () => dispatch(closeApp(processInfo)),
         });
+        RelatedProcesses.Close();
     };
     return {
         HandleFullscreen,

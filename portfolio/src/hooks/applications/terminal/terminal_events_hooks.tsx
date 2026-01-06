@@ -1,19 +1,20 @@
 import type { TerminalStates } from "@/models/storage/slice/applications/terminal_slices_types";
-import { UpdateTerminalState } from "@/storage/redux/desktop_states/applicaions/terminal_states";
-import { clearInputValue, type SystemInfo } from "@/storage/redux/input_slice";
-import { useEffect, useRef } from "react";
+import {
+    ClearInputValue,
+    UpdateTerminalState,
+} from "@/storage/redux/desktop_states/applicaions/terminal_states";
+import { useEffect } from "react";
 import { useDispatch } from "react-redux";
+import useCommandHandler from "./command_handler";
 
 const useTerminalEvent = (
     container: React.RefObject<HTMLDivElement | null>,
     // processInfo: AppInfo,
-    input: string,
+    shellPrompt: string,
     terminalState?: TerminalStates,
-    sysInfo?: SystemInfo,
 ) => {
-    const user_info = { username: "root" };
     const dispatch = useDispatch();
-    const localTerminalState = useRef<TerminalStates>(terminalState);
+    const commandHandler = useCommandHandler(shellPrompt, terminalState);
     const HandleKeyDownEvent = (e: KeyboardEvent) => {
         const { key } = e;
         switch (key.toLowerCase()) {
@@ -25,39 +26,35 @@ const useTerminalEvent = (
         }
     };
     const EnterSubmitHandler = () => {
-        const commandHistory = `[ ${sysInfo?.hostname}@${user_info.username} /] $ ${input}`;
         if (!terminalState) return;
         // This will handle the clear command
-        if (input.split(" ")[0] === "clear") {
-            if (!localTerminalState.current) return;
+        if (terminalState.inputState.inputValue.split(" ")[0] === "clear") {
+            console.log(terminalState.inputState.inputValue);
             dispatch(
                 UpdateTerminalState({
-                    ...localTerminalState.current,
+                    ...terminalState,
                     display: [],
                     history: [
-                        ...localTerminalState.current.history,
-                        commandHistory,
+                        ...terminalState.history,
+                        terminalState.inputState.inputValue,
                     ],
                 }),
             );
-            clearInputValue();
+            dispatch(ClearInputValue({ processId: terminalState.processId }));
             return;
         }
         // this will handler others command
         const tempTerminalState: TerminalStates = {
             ...terminalState,
-            display: [
-                ...(localTerminalState?.current?.display || []),
-                // CommandHandler(localCommand.current, sysInfo),
-            ],
+            display: [...(terminalState?.display || []), commandHandler.Exec()],
             history: [
-                ...(localTerminalState?.current?.history || []),
-                commandHistory,
+                ...(terminalState.history || []),
+                terminalState.inputState.inputValue,
             ],
         };
-        if (!input) return;
+        if (!terminalState.inputState.inputValue) return;
         dispatch(UpdateTerminalState(tempTerminalState));
-        clearInputValue();
+        dispatch(ClearInputValue({ processId: terminalState.processId }));
     };
     useEffect(() => {
         const tempContainer = container.current;
@@ -67,9 +64,5 @@ const useTerminalEvent = (
             tempContainer.removeEventListener("keydown", HandleKeyDownEvent);
         };
     });
-    // Watch Terminal State
-    useEffect(() => {
-        localTerminalState.current = terminalState;
-    }, [terminalState]);
 };
 export default useTerminalEvent;
