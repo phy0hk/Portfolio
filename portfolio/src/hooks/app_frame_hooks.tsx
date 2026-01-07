@@ -118,13 +118,13 @@ export const useAppFrameMove = (
             animate(appFrame, {
                 ...newPos,
                 ...beforeFullScreen.current,
-                duration: 50,
+                duration: 30,
             });
             dispatch(updateAppState(newState));
         } else {
             animate(appFrame, {
                 ...newPos,
-                duration: 100,
+                duration: 30,
             });
         }
         framePosition.current = { x: newPos.x, y: newPos.y };
@@ -151,7 +151,7 @@ export const useAppFrameMove = (
         } else {
             animate(appFrame, {
                 ...newPos,
-                duration: 100,
+                duration: 50,
             });
         }
         framePosition.current = { x: newPos.x, y: newPos.y };
