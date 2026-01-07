@@ -21,7 +21,7 @@ const AppFrame = ({
     const { HandleResize } = useAppFrameResize(appFrameRef);
     return (
         <div
-            className={`absolute min-w-120 min-h-120 h-120 w-120 flex flex-col
+            className={`absolute min-w-100 min-h-100 h-120 w-100 flex flex-col
               bg-zinc-900/70 rounded-xl border border-zinc-800
               z-0 ${processInfo.state === "minimized" ? "hidden" : ""}
              overflow-hidden`}

@@ -15,10 +15,7 @@ const useCommandHandler = (
                 return (
                     generateShellPromptString() +
                     renderToString(
-                        <p>
-                            {shellPrompt +
-                                "Available commands: help, clear, exit"}
-                        </p>,
+                        <p>"Available commands: help, clear, exit"</p>,
                     )
                 );
             }

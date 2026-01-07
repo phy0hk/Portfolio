@@ -55,6 +55,7 @@ export const useAppFrameMove = (
     const initialElementPos = useRef<PositionType>({ x: 0, y: 0 });
     const startPos = useRef<PositionType>({ x: 0, y: 0 });
     const dispatch = useDispatch();
+    const beforeFullScreen = useRef<ElementSizeType>({ width: 0, height: 0 });
     const [mouseDown, setMouseDown] = useState(false);
     const RelatedProcesses = useRelatedProcesses(processInfo);
     useEffect(() => {
@@ -63,7 +64,6 @@ export const useAppFrameMove = (
         const { x, y } = rect;
         framePosition.current = { x: x - 8, y: y - 56 };
     });
-
     useEffect(() => {
         if (mouseDown) {
             document.body.style.userSelect = "none";
@@ -97,20 +97,48 @@ export const useAppFrameMove = (
         const newPos: PositionType = { x: 0, y: 0 };
         if (newX >= 0) newPos.x = newX;
         if (newY >= 0) newPos.y = newY;
-        animate(appFrame, {
-            ...newPos,
-            duration: 50,
-        });
+        if (processInfo.state === "fullscreen") {
+            const newState: AppInfo = { ...processInfo, state: "default" };
+            animate(appFrame, {
+                ...newPos,
+                ...beforeFullScreen.current,
+                duration: 50,
+            });
+            dispatch(updateAppState(newState));
+        } else {
+            animate(appFrame, {
+                ...newPos,
+                duration: 100,
+            });
+        }
         framePosition.current = { x: newPos.x, y: newPos.y };
         // const updatedState: AppInfo = { ...processInfo, position: newPos };
         // dispatch(updateAppState(updatedState));
     };
     const HandleFullscreen = () => {
         if (processInfo.state === "default") {
+            if (!appFrame) return;
             const newState: AppInfo = { ...processInfo, state: "fullscreen" };
+            const rect = appFrame.getBoundingClientRect();
+            beforeFullScreen.current = {
+                width: rect?.width - 100 || 0,
+                height: rect?.height - 100 || 0,
+            };
+            animate(appFrame, {
+                duration: 50,
+                width: window.innerWidth - 15,
+                height: window.innerHeight - 60,
+                x: 0,
+                y: 0,
+            });
             dispatch(updateAppState(newState));
         } else {
             const newState: AppInfo = { ...processInfo, state: "default" };
+            if (!appFrame) return;
+            animate(appFrame, {
+                duration: 50,
+                ...beforeFullScreen.current,
+            });
             dispatch(updateAppState(newState));
         }
     };
