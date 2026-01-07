@@ -71,7 +71,16 @@ export const useAppFrameMove = (
             document.body.style.userSelect = "";
         }
     }, [mouseDown]);
-
+    const HandleTouchStart = (e: React.TouchEvent) => {
+        initialElementPos.current = {
+            x: framePosition.current.x,
+            y: framePosition.current.y,
+        };
+        startPos.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+        setMouseDown(true);
+        window.addEventListener("touchmove", HandleTouchMove);
+        window.addEventListener("touchend", HandleTouchEnd);
+    };
     const HandleMouseDown = (e: React.MouseEvent) => {
         initialElementPos.current = {
             x: framePosition.current.x,
@@ -83,10 +92,44 @@ export const useAppFrameMove = (
         window.addEventListener("mouseup", HandleMouseUp);
     };
 
+    const HandleTouchEnd = () => {
+        setMouseDown(false);
+        window.removeEventListener("touchmove", HandleTouchMove);
+        window.removeEventListener("touchend", HandleTouchEnd);
+    };
     const HandleMouseUp = () => {
         setMouseDown(false);
         window.removeEventListener("mousemove", HandleMouseMove);
         window.removeEventListener("mouseup", HandleMouseUp);
+    };
+
+    const HandleTouchMove = (e: TouchEvent) => {
+        if (!appFrame) return;
+        const touch = e.touches[0];
+        const deltaX = touch.clientX - startPos.current.x;
+        const deltaY = touch.clientY - startPos.current.y;
+        const newX = Math.max(0, initialElementPos.current.x + deltaX);
+        const newY = Math.max(0, initialElementPos.current.y + deltaY);
+        const newPos: PositionType = { x: 0, y: 0 };
+        if (newX >= 0) newPos.x = newX;
+        if (newY >= 0) newPos.y = newY;
+        if (processInfo.state === "fullscreen") {
+            const newState: AppInfo = { ...processInfo, state: "default" };
+            animate(appFrame, {
+                ...newPos,
+                ...beforeFullScreen.current,
+                duration: 50,
+            });
+            dispatch(updateAppState(newState));
+        } else {
+            animate(appFrame, {
+                ...newPos,
+                duration: 100,
+            });
+        }
+        framePosition.current = { x: newPos.x, y: newPos.y };
+        // const updatedState: AppInfo = { ...processInfo, position: newPos };
+        // dispatch(updateAppState(updatedState));
     };
     const HandleMouseMove = (e: MouseEvent) => {
         if (!appFrame) return;
@@ -121,13 +164,13 @@ export const useAppFrameMove = (
             const newState: AppInfo = { ...processInfo, state: "fullscreen" };
             const rect = appFrame.getBoundingClientRect();
             beforeFullScreen.current = {
-                width: rect?.width - 100 || 0,
-                height: rect?.height - 100 || 0,
+                width: rect?.width || 0,
+                height: rect?.height || 0,
             };
             animate(appFrame, {
                 duration: 50,
                 width: window.innerWidth - 15,
-                height: window.innerHeight - 60,
+                height: window.innerHeight - 70,
                 x: 0,
                 y: 0,
             });
@@ -172,6 +215,9 @@ export const useAppFrameMove = (
         HandleMouseDown,
         HandleMouseMove,
         HandleMouseUp,
+        HandleTouchStart,
+        HandleTouchMove,
+        HandleTouchEnd,
         CloseApp,
     };
 };

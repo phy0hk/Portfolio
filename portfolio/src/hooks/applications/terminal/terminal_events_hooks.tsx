@@ -9,15 +9,20 @@ import {
 import { useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
 import useCommandHandler from "./command_handler";
+import type { AppInfo } from "@/models/storage/slice/desktop_slice_types";
 
 const useTerminalEvent = (
     container: React.RefObject<HTMLDivElement | null>,
-    // processInfo: AppInfo,
+    processInfo: AppInfo,
     shellPrompt: string,
     terminalState?: TerminalStates,
 ) => {
     const dispatch = useDispatch();
-    const commandHandler = useCommandHandler(shellPrompt, terminalState);
+    const commandHandler = useCommandHandler(
+        shellPrompt,
+        terminalState,
+        processInfo,
+    );
     const currentHistoryIndex = useRef<number>(-1);
     const HandleKeyDownEvent = (e: KeyboardEvent) => {
         const { key } = e;

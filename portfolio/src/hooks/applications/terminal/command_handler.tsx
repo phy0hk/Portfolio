@@ -2,13 +2,17 @@ import type { TerminalStates } from "@/models/storage/slice/applications/termina
 import { renderToString } from "react-dom/server";
 import Echo from "./commands/echo";
 import useCmdAboutMe from "./commands/aboutme";
+import useCmdExit from "./commands/exit";
+import type { AppInfo } from "@/models/storage/slice/desktop_slice_types";
 // import { useDispatch } from "react-redux";
 
 const useCommandHandler = (
     shellPrompt: string,
     terminalState?: TerminalStates,
+    processInfo?: AppInfo,
 ) => {
     const cmdAboutMe = useCmdAboutMe(shellPrompt, terminalState);
+    const cmdExit = useCmdExit(processInfo);
     const Exec = () => {
         switch (terminalState?.inputState.inputValue) {
             case "help": {
@@ -39,6 +43,10 @@ const useCommandHandler = (
             }
             case "about": {
                 cmdAboutMe.Trigger();
+                return "";
+            }
+            case "exit": {
+                cmdExit.CloseApp();
                 return "";
             }
             default: {

@@ -7,12 +7,12 @@ const Terminal = ({ processInfo }: { processInfo: AppInfo }) => {
     const container = useRef<HTMLDivElement>(null);
     const { terminalState, HandleOnChange, shellPrompt } =
         useTerminal(processInfo);
-    useTerminalEvent(container, shellPrompt, terminalState);
+    useTerminalEvent(container, processInfo, shellPrompt, terminalState);
     const textAreaRef = useRef<HTMLTextAreaElement>(null);
     return (
         <div
             ref={container}
-            className={`w-full h-full flex flex-col p-2 overflow-auto ${processInfo.zindex == 999 ? "bg-black" : ""}`}
+            className={`w-full h-full flex flex-col p-2 overflow-auto ${processInfo.zindex == 999 ? "bg-black" : ""} `}
             id={`terminal-${processInfo.processId}`}
         >
             {terminalState?.display.map((item, index) => (

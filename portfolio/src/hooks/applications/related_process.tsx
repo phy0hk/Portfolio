@@ -5,9 +5,10 @@ import {
 } from "@/storage/redux/desktop_states/applicaions/terminal_states";
 import { useDispatch } from "react-redux";
 
-const useRelatedProcesses = (processInfo: AppInfo) => {
+const useRelatedProcesses = (processInfo?: AppInfo) => {
     const dispatch = useDispatch();
     const Initialize = (processId: string) => {
+        if (!processInfo) return;
         switch (processInfo.name) {
             case "Terminal":
                 dispatch(NewTerminal(processId));
@@ -15,6 +16,7 @@ const useRelatedProcesses = (processInfo: AppInfo) => {
         }
     };
     const Close = () => {
+        if (!processInfo) return;
         switch (processInfo.name) {
             case "Terminal":
                 dispatch(CloseTerminal(processInfo));

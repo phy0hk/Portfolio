@@ -12,8 +12,13 @@ const AppFrameBar = ({
     appIcon = "",
     appFrameRef,
 }: AppFrameBarProps) => {
-    const { HandleFullscreen, HandleMinimize, HandleMouseDown, CloseApp } =
-        useAppFrameMove(processInfo, appFrameRef);
+    const {
+        HandleFullscreen,
+        HandleMinimize,
+        HandleMouseDown,
+        HandleTouchStart,
+        CloseApp,
+    } = useAppFrameMove(processInfo, appFrameRef);
     const iconStyles = "p-1 bg-zinc-900/30 rounded-full";
     const barInfoStyle = "flex flex-row items-center gap-1 z-10";
 
@@ -25,6 +30,7 @@ const AppFrameBar = ({
             <div
                 className="w-full h-full absolute  top-0 left-0 z-0"
                 onMouseDown={HandleMouseDown}
+                onTouchStart={HandleTouchStart}
             ></div>
             <div className={barInfoStyle}>
                 <img
