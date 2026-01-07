@@ -47,6 +47,25 @@ const reducers = {
             )
         ] = action.payload;
     },
+    AppendDisplay(
+        state: AllTerminalStates,
+        action: PayloadAction<{ processId: string; display: string }>,
+    ) {
+        const index = state.TerminalsState.findIndex(
+            (item) => item.processId == action.payload.processId,
+        );
+        if (index !== -1) {
+            state.TerminalsState[index].display.push(action.payload.display);
+        }
+    },
+    ClearDisplay(state: AllTerminalStates, action: PayloadAction<string>) {
+        const index = state.TerminalsState.findIndex(
+            (item) => item.processId == action.payload,
+        );
+        if (index !== -1) {
+            state.TerminalsState[index].display = [];
+        }
+    },
     UpdateTerminalInput(
         state: AllTerminalStates,
         action: PayloadAction<{ processId: string; inputValue: string }>,
@@ -98,6 +117,14 @@ const reducers = {
         state.TerminalsState[index].inputState.fetchInputEvent =
             action.payload.fetchInputEvent;
     },
+    AppendHistory(state: AllTerminalStates, action: PayloadAction<string>) {
+        const index = state.TerminalsState.findIndex(
+            (item) => item.processId == action.payload,
+        );
+        state.TerminalsState[index].history.push(
+            state.TerminalsState[index].inputState.inputValue,
+        );
+    },
     SetIsInSpecialCommand(
         state: AllTerminalStates,
         action: PayloadAction<{
@@ -129,5 +156,8 @@ export const {
     AppendInputValue,
     SetInputValue,
     CloseTerminal,
+    AppendDisplay,
+    ClearDisplay,
+    AppendHistory,
 } = TerminalSlice.actions;
 export default TerminalSlice;

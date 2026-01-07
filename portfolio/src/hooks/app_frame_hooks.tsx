@@ -55,6 +55,7 @@ export const useAppFrameMove = (
     const initialElementPos = useRef<PositionType>({ x: 0, y: 0 });
     const startPos = useRef<PositionType>({ x: 0, y: 0 });
     const dispatch = useDispatch();
+    const [mouseDown, setMouseDown] = useState(false);
     const RelatedProcesses = useRelatedProcesses(processInfo);
     useEffect(() => {
         if (!appFrame) return;
@@ -63,18 +64,27 @@ export const useAppFrameMove = (
         framePosition.current = { x: x - 8, y: y - 56 };
     });
 
+    useEffect(() => {
+        if (mouseDown) {
+            document.body.style.userSelect = "none";
+        } else {
+            document.body.style.userSelect = "";
+        }
+    }, [mouseDown]);
+
     const HandleMouseDown = (e: React.MouseEvent) => {
         initialElementPos.current = {
             x: framePosition.current.x,
             y: framePosition.current.y,
         };
         startPos.current = { x: e.clientX, y: e.clientY };
-
+        setMouseDown(true);
         window.addEventListener("mousemove", HandleMouseMove);
         window.addEventListener("mouseup", HandleMouseUp);
     };
 
     const HandleMouseUp = () => {
+        setMouseDown(false);
         window.removeEventListener("mousemove", HandleMouseMove);
         window.removeEventListener("mouseup", HandleMouseUp);
     };

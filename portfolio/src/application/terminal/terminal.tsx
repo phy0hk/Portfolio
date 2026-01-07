@@ -8,6 +8,7 @@ const Terminal = ({ processInfo }: { processInfo: AppInfo }) => {
     const { terminalState, HandleOnChange, shellPrompt } =
         useTerminal(processInfo);
     useTerminalEvent(container, shellPrompt, terminalState);
+    const textAreaRef = useRef<HTMLTextAreaElement>(null);
     return (
         <div
             ref={container}
@@ -21,9 +22,18 @@ const Terminal = ({ processInfo }: { processInfo: AppInfo }) => {
                 ></div>
             ))}
             <textarea
-                className="w-full min-h-75 outline-none resize-none text-wrap"
+                className={`w-full min-h-20 outline-none resize-none text-wrap ${terminalState?.inputState.isInSpecialCommand ? "hidden" : ""}`}
                 value={shellPrompt + terminalState?.inputState.inputValue}
                 onChange={HandleOnChange}
+                ref={textAreaRef}
+            />
+            <div
+                className="h-full w-full"
+                onClick={() => {
+                    if (textAreaRef.current) {
+                        textAreaRef.current.focus();
+                    }
+                }}
             />
         </div>
     );

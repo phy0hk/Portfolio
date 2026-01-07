@@ -1,46 +1,69 @@
 import type { TerminalStates } from "@/models/storage/slice/applications/terminal_slices_types";
 import { renderToString } from "react-dom/server";
 import Echo from "./commands/echo";
+import useCmdAboutMe from "./commands/aboutme";
 // import { useDispatch } from "react-redux";
 
 const useCommandHandler = (
     shellPrompt: string,
     terminalState?: TerminalStates,
 ) => {
-    // const dispatch = useDispatch();
+    const cmdAboutMe = useCmdAboutMe(shellPrompt, terminalState);
     const Exec = () => {
         switch (terminalState?.inputState.inputValue) {
             case "help": {
-                return renderToString(
-                    <p>
-                        {shellPrompt + "Available commands: help, clear, exit"}
-                    </p>,
+                return (
+                    generateShellPromptString() +
+                    renderToString(
+                        <p>
+                            {shellPrompt +
+                                "Available commands: help, clear, exit"}
+                        </p>,
+                    )
                 );
             }
             case "history": {
-                return renderToString(
-                    <>
-                        <p>{shellPrompt + "history"}</p>
-                        {terminalState?.history.map((item) => (
-                            <p>{item}</p>
-                        ))}
-                    </>,
+                return (
+                    generateShellPromptString() +
+                    renderToString(
+                        <>
+                            {terminalState?.history.map((item) => (
+                                <p>{item}</p>
+                            ))}
+                        </>,
+                    )
                 );
             }
             case "echo": {
-                return Echo(shellPrompt, terminalState);
+                return (
+                    generateShellPromptString() +
+                    Echo(shellPrompt, terminalState)
+                );
+            }
+            case "about": {
+                cmdAboutMe.Trigger();
+                return "";
             }
             default: {
-                return renderToString(
-                    <>
-                        <p>
-                            {shellPrompt + terminalState?.inputState.inputValue}
-                        </p>
-                        <p>{"Invalid Command"}</p>
-                    </>,
+                return (
+                    generateShellPromptString() +
+                    renderToString(
+                        <>
+                            <p>{"Invalid Command"}</p>
+                            <p>
+                                The Available Commands are : help, clear,
+                                history, about, echo
+                            </p>
+                        </>,
+                    )
                 );
             }
         }
+    };
+    const generateShellPromptString = () => {
+        return renderToString(
+            <p>{shellPrompt + terminalState?.inputState.inputValue}</p>,
+        );
     };
     return { Exec };
 };

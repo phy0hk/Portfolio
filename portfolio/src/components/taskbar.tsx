@@ -1,6 +1,6 @@
 import useTaskbar from "../hooks/taskbar_hooks";
 
-import { Circle } from "lucide-react";
+import { Circle, Volume2, Wifi } from "lucide-react";
 import Datetime from "./datatime_display";
 
 const TaskBar = () => {
@@ -18,7 +18,25 @@ const TaskBar = () => {
                     />
                 </button>
                 {/*<CurrentOpenedApp />*/}
-                <Datetime />
+                <div className="flex-row flex items-center gap-5">
+                    <div className="flex flex-row gap-3 items-center">
+                        <div className="flex flex-col text-xs justify-center items-center">
+                            <p>
+                                {navigator.language
+                                    .split("-")[0]
+                                    .toUpperCase() || "EN"}
+                            </p>
+                            <p>
+                                {navigator.language
+                                    .split("-")[1]
+                                    .toUpperCase() || "US"}
+                            </p>
+                        </div>
+                        <Volume2 size={18} />
+                        <Wifi size={18} />
+                    </div>
+                    <Datetime />
+                </div>
             </div>
         </div>
     );
