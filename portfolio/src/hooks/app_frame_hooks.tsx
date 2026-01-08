@@ -150,11 +150,8 @@ export const useAppFrameMove = (
         } else {
             animate(appFrame, {
                 ...newPos,
-<<<<<<< HEAD
-                duration: 50,
-=======
+
                 duration: 10,
->>>>>>> 2f404cc (Update)
             });
         }
         framePosition.current = { x: newPos.x, y: newPos.y };
