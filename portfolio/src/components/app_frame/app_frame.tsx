@@ -1,4 +1,4 @@
-import type { AppInfo } from "@/models/storage/slice/desktop_slice_types";
+import type { AppInfo } from "@/models/storage/slice/applications/application_info";
 import AppFrameBar from "./app_frame_bar";
 import { useAppFrame, useAppFrameResize } from "@/hooks/app_frame_hooks";
 import { useRef } from "react";
@@ -8,16 +8,9 @@ interface AppContainerProps {
     processInfo: AppInfo;
     currentOpenedAppList: AppInfo[];
 }
-const AppFrame = ({
-    children,
-    processInfo,
-    currentOpenedAppList,
-}: AppContainerProps) => {
+const AppFrame = ({ children, processInfo }: AppContainerProps) => {
     const appFrameRef = useRef<HTMLDivElement>(null);
-    const { appIcon, HandleRearranger } = useAppFrame(
-        processInfo,
-        currentOpenedAppList,
-    );
+    const { appIcon, HandleRearranger } = useAppFrame(processInfo);
     const { HandleResize } = useAppFrameResize(appFrameRef);
     return (
         <div

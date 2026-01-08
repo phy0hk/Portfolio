@@ -1,18 +1,20 @@
 import useTerminalEvent from "@/hooks/applications/terminal/terminal_events_hooks";
 import useTerminal from "@/hooks/applications/terminal/terminal_hooks";
-import type { AppInfo } from "@/models/storage/slice/desktop_slice_types";
+import type { AppInfo } from "@/models/storage/slice/applications/application_info";
 import { useRef } from "react";
 
 const Terminal = ({ processInfo }: { processInfo: AppInfo }) => {
     const container = useRef<HTMLDivElement>(null);
-    const { terminalState, HandleOnChange, shellPrompt } =
-        useTerminal(processInfo);
-    useTerminalEvent(container, processInfo, shellPrompt, terminalState);
     const textAreaRef = useRef<HTMLTextAreaElement>(null);
+    const { terminalState, HandleOnChange, shellPrompt } = useTerminal(
+        processInfo,
+        textAreaRef,
+    );
+    useTerminalEvent(container, processInfo, shellPrompt, terminalState);
     return (
         <div
             ref={container}
-            className={`w-full h-full flex flex-col p-2 overflow-auto ${processInfo.zindex == 999 ? "bg-black" : ""} `}
+            className={`w-full h-full flex flex-col p-2 overflow-auto ${processInfo.zindex == 9999 ? "bg-black" : ""} `}
             id={`terminal-${processInfo.processId}`}
         >
             {terminalState?.display.map((item, index) => (
@@ -22,18 +24,10 @@ const Terminal = ({ processInfo }: { processInfo: AppInfo }) => {
                 ></div>
             ))}
             <textarea
-                className={`w-full min-h-20 outline-none resize-none text-wrap ${terminalState?.inputState.isInSpecialCommand ? "hidden" : ""}`}
+                className={`w-full min-h-20 overflow-hidden outline-none resize-none text-wrap ${terminalState?.inputState.isInSpecialCommand ? "hidden" : ""}`}
                 value={shellPrompt + terminalState?.inputState.inputValue}
                 onChange={HandleOnChange}
                 ref={textAreaRef}
-            />
-            <div
-                className="h-full w-full"
-                onClick={() => {
-                    if (textAreaRef.current) {
-                        textAreaRef.current.focus();
-                    }
-                }}
             />
         </div>
     );

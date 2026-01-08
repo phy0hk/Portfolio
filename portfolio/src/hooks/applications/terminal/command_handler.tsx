@@ -3,7 +3,7 @@ import { renderToString } from "react-dom/server";
 import Echo from "./commands/echo";
 import useCmdAboutMe from "./commands/aboutme";
 import useCmdExit from "./commands/exit";
-import type { AppInfo } from "@/models/storage/slice/desktop_slice_types";
+import type { AppInfo } from "@/models/storage/slice/applications/application_info";
 // import { useDispatch } from "react-redux";
 
 const useCommandHandler = (

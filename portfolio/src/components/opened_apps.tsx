@@ -1,8 +1,9 @@
 import type { RootState } from "@/storage/redux/store";
 import { useSelector } from "react-redux";
 import AppFrame from "./app_frame/app_frame";
-import type { AppInfo } from "@/models/storage/slice/desktop_slice_types";
+import type { AppInfo } from "@/models/storage/slice/applications/application_info";
 import Terminal from "@/application/terminal/terminal";
+import Cv from "@/application/cv/cv";
 
 const OpenedApps = () => {
     const CurrentRunningApp = useSelector(
@@ -26,8 +27,8 @@ const Apps = ({ app }: { app: AppInfo }) => {
     switch (app.name) {
         case "Terminal":
             return <Terminal processInfo={app} />;
-        // case "Browser":
-        //     return <Browser processInfo={app} />;
+        case "CV":
+            return <Cv />;
     }
 };
 export default OpenedApps;

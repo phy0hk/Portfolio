@@ -1,5 +1,5 @@
 import { Minus, Square, X } from "lucide-react";
-import type { AppInfo } from "@/models/storage/slice/desktop_slice_types";
+import type { AppInfo } from "@/models/storage/slice/applications/application_info";
 import { useAppFrameMove } from "@/hooks/app_frame_hooks";
 
 interface AppFrameBarProps {

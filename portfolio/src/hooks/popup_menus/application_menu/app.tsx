@@ -1,12 +1,13 @@
 import useRelatedProcesses from "@/hooks/applications/related_process";
-import type { AppInfo } from "@/models/storage/slice/desktop_slice_types";
 import {
+    focusApp,
     openNewApp,
     setPopUpMenu,
 } from "@/storage/redux/desktop_states/desktop_slice";
-import { cacheImage } from "@/utils/image_cacher";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+import { cacheFile } from "@/utils/file_cacher";
+import type { AppInfo } from "@/models/storage/slice/applications/application_info";
 
 const useAppHooks = (App: AppInfo) => {
     const dispatch = useDispatch();
@@ -23,13 +24,14 @@ const useAppHooks = (App: AppInfo) => {
         };
         dispatch(setPopUpMenu("none"));
         dispatch(openNewApp(openApp));
+        dispatch(focusApp(openApp));
         RelatedProcess.Initialize(newProcessId);
     };
 
     useEffect(() => {
         if (!App.icon) return;
-        cacheImage(App.icon).then((image) => {
-            const object_url = URL.createObjectURL(image.image_data);
+        cacheFile(App.icon).then((image) => {
+            const object_url = URL.createObjectURL(image.file_data);
             setAppIcon(object_url);
             return () => URL.revokeObjectURL(object_url);
         });

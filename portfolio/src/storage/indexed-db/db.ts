@@ -1,6 +1,6 @@
 import Dexie, { type EntityTable } from "dexie";
 import type {
-    CacheImageType,
+    CacheFileType,
     DisplayDataType,
     HistoryDataType,
     UserInputType,
@@ -10,12 +10,12 @@ const db = new Dexie("terminal-data") as Dexie & {
     displayData: EntityTable<DisplayDataType, "id">;
     historyCommands: EntityTable<HistoryDataType, "id">;
     userInput: EntityTable<UserInputType, "id">;
-    cacheImages: EntityTable<CacheImageType, "id">;
+    cacheFiles: EntityTable<CacheFileType, "id">;
 };
 db.version(1).stores({
     displayData: "++id,display_type,display_content",
     historyCommands: "++id,command,timestamp",
     userInput: "++id,input",
-    cacheImages: "++id,image_url,image_data",
+    cacheFiles: "++id,file_url,file_data",
 });
 export default db;

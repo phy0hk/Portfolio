@@ -1,4 +1,4 @@
-import Taskbar from "@/components/taskbar";
+import Taskbar from "@/components/taskbar/taskbar";
 import PopUp from "./components/popup";
 import useMainHook from "./hooks/main_hook";
 import OpenedApps from "./components/opened_apps";
@@ -12,7 +12,7 @@ function App() {
             <PopUp />
             <img
                 src={wallpaper}
-                className="h-full w-full object-cover object-center fixed inset-0 brightness-100 -z-10 select-none"
+                className="h-full w-full object-cover object-center fixed inset-0 brightness-100 z-0 select-none"
             />
             <OpenedApps />
         </div>

@@ -1,39 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import type {
-    AppInfo,
     DesktopState,
     DisplayModeType,
     PopUpMenuType,
 } from "@/models/storage/slice/desktop_slice_types";
-// import { Zindex_Rearranger } from "../func/zindex_rearranger";
+import type { AppInfo } from "@/models/storage/slice/applications/application_info";
 
 const initialState: DesktopState = {
     DisplayMode: "default",
     PopUpMenu: "none",
-    AppList: [
-        {
-            id: 0,
-            processId: "0",
-            name: "Terminal",
-            icon: "/app_icons/terminal.png",
-            zindex: 999,
-        },
-        {
-            id: 1,
-            processId: "1",
-            name: "Browser",
-            icon: "/app_icons/globe.png",
-            zindex: 999,
-        },
-        {
-            id: 2,
-            processId: "2",
-            name: "Settings",
-            icon: "/app_icons/settings.png",
-            zindex: 999,
-        },
-    ],
+    lastZindex: 0,
     CurrentRunningApp: [],
 };
 
@@ -71,6 +48,21 @@ const DesktopSlice = createSlice({
                 zindex: 999 - index,
             }));
         },
+        focusApp(state, action: PayloadAction<AppInfo>) {
+            const prevFocusedIndex = state.CurrentRunningApp.findIndex(
+                (item) => item.zindex == 9999,
+            );
+
+            const currentFocusIndex = state.CurrentRunningApp.findIndex(
+                (item) => item.processId == action.payload.processId,
+            );
+            if (prevFocusedIndex !== -1) {
+                state.CurrentRunningApp[prevFocusedIndex].zindex =
+                    state.lastZindex + 1;
+                state.lastZindex += 1;
+            }
+            state.CurrentRunningApp[currentFocusIndex].zindex = 9999;
+        },
     },
 });
 
@@ -81,5 +73,6 @@ export const {
     closeApp,
     updateAppState,
     updateCurrentRunningApp,
+    focusApp,
 } = DesktopSlice.actions;
 export default DesktopSlice;

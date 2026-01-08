@@ -1,4 +1,4 @@
-import type { AppInfo } from "@/models/storage/slice/desktop_slice_types";
+import type { AppInfo } from "@/models/storage/slice/applications/application_info";
 import {
     CloseTerminal,
     NewTerminal,

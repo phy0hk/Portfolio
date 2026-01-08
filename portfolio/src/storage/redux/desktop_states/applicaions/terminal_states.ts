@@ -18,10 +18,12 @@ const reducers = {
                 fetchInputEvent: true,
                 isInSpecialCommand: false,
                 sysInfo: {
-                    hostname: "archlinux",
+                    user: "guest",
+                    hostname: "webos",
                     os: "linux",
                     architecture: "x86_64",
                     kernal: "linux_lts 6.12",
+                    path: "/home/guest",
                 },
                 environmentVariables: { os: "Linux x86_64" },
             },

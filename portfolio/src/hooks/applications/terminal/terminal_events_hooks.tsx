@@ -9,7 +9,7 @@ import {
 import { useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
 import useCommandHandler from "./command_handler";
-import type { AppInfo } from "@/models/storage/slice/desktop_slice_types";
+import type { AppInfo } from "@/models/storage/slice/applications/application_info";
 
 const useTerminalEvent = (
     container: React.RefObject<HTMLDivElement | null>,

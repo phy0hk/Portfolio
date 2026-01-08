@@ -1,7 +1,8 @@
-import useTaskbar from "../hooks/taskbar_hooks";
+import useTaskbar from "../../hooks/taskbar_hooks";
 
 import { Circle, Volume2, Wifi } from "lucide-react";
-import Datetime from "./datatime_display";
+import Datetime from "../datatime_display";
+import CurrentOpenedApp from "./current_opened_app";
 
 const TaskBar = () => {
     const taskbarHooks = useTaskbar();
@@ -17,7 +18,7 @@ const TaskBar = () => {
                         className="text-zinc-300 hover:text-white"
                     />
                 </button>
-                {/*<CurrentOpenedApp />*/}
+                <CurrentOpenedApp />
                 <div className="flex-row flex items-center gap-5">
                     <div className="flex flex-row gap-3 items-center">
                         <div className="flex flex-col text-xs justify-center items-center">

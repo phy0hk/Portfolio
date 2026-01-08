@@ -17,6 +17,8 @@ interface InputState {
 }
 export interface SystemInfo {
     hostname: string;
+    user: string;
+    path: string;
     os: "linux";
     architecture: "x86_64" | "arm64";
     kernal: string;

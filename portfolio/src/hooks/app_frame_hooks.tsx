@@ -1,33 +1,29 @@
 import type { ResizePosition } from "@/models/components/app_frame";
-import type { AppInfo } from "@/models/storage/slice/desktop_slice_types";
 import {
     type ElementSizeType,
     type PositionType,
 } from "@/models/storage/utils_type";
 import {
     closeApp,
+    focusApp,
     updateAppState,
-    updateCurrentRunningApp,
 } from "@/storage/redux/desktop_states/desktop_slice";
-import { cacheImage } from "@/utils/image_cacher";
-import { Zindex_Rearranger } from "@/utils/zindex_rearranger";
+import { cacheFile } from "@/utils/file_cacher";
 import { animate } from "animejs";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import useRelatedProcesses from "./applications/related_process";
+import type { AppInfo } from "@/models/storage/slice/applications/application_info";
 
-export const useAppFrame = (
-    processInfo: AppInfo,
-    currentOpenedAppList: AppInfo[],
-) => {
+export const useAppFrame = (processInfo: AppInfo) => {
     const [appIcon, setAppIcon] = useState<string>("");
     const dispatch = useDispatch();
 
     useEffect(() => {
         //Load app icon from processInfo
         if (!processInfo.icon) return;
-        cacheImage(processInfo.icon).then((icon) => {
-            const url = URL.createObjectURL(icon.image_data);
+        cacheFile(processInfo.icon).then((file) => {
+            const url = URL.createObjectURL(file.file_data);
             setAppIcon(url);
             return () => URL.revokeObjectURL(url);
         });
@@ -35,11 +31,14 @@ export const useAppFrame = (
 
     //This will the rearrange the visible order
     const HandleRearranger = () => {
-        const tempAppList = Zindex_Rearranger(
-            processInfo,
-            currentOpenedAppList,
-        );
-        dispatch(updateCurrentRunningApp(tempAppList));
+        // const tempAppList = Zindex_Rearranger(
+        //     processInfo,
+        //     currentOpenedAppList,
+        // );
+        // dispatch(updateCurrentRunningApp(tempAppList));
+        if (processInfo.zindex !== 9999) {
+            dispatch(focusApp(processInfo));
+        }
     };
 
     return { appIcon, HandleRearranger };
@@ -145,13 +144,17 @@ export const useAppFrameMove = (
             animate(appFrame, {
                 ...newPos,
                 ...beforeFullScreen.current,
-                duration: 50,
+                duration: 10,
             });
             dispatch(updateAppState(newState));
         } else {
             animate(appFrame, {
                 ...newPos,
+<<<<<<< HEAD
                 duration: 50,
+=======
+                duration: 10,
+>>>>>>> 2f404cc (Update)
             });
         }
         framePosition.current = { x: newPos.x, y: newPos.y };

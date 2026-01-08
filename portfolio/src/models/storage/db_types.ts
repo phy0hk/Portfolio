@@ -12,8 +12,8 @@ export interface UserInputType {
     id: number;
     input: string;
 }
-export interface CacheImageType {
+export interface CacheFileType {
     id: number;
-    image_url: string;
-    image_data: Blob;
+    file_url: string;
+    file_data: Blob;
 }

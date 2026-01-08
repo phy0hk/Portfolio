@@ -26,13 +26,12 @@ const useCmdAboutMe = (shellPrompt: string, terminalState?: TerminalStates) => {
     const AboutMeString = (uid: string) => {
         return renderToString(
             <h3 className="text-xl" id={`header-${uid}`}>
-                Hello It's Me
+                Hi I'm Phyo
             </h3>,
         );
     };
     const removeHidden = (id: string) => {
         const element = document.getElementById(id.replace("#", ""));
-        console.log(element);
         element?.classList.remove("hidden");
     };
 

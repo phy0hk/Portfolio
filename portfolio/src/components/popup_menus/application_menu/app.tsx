@@ -1,5 +1,5 @@
 import useAppHooks from "@/hooks/popup_menus/application_menu/app";
-import { type AppInfo } from "@/models/storage/slice/desktop_slice_types";
+import { type AppInfo } from "@/models/storage/slice/applications/application_info";
 import { Image } from "lucide-react";
 
 const App = ({ App }: { App: AppInfo }) => {
