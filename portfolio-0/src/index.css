@@ -1,0 +1,17 @@
+@import "tailwindcss";
+
+@font-face {
+    font-family: "Chillax-Variable";
+    src:
+        url("/fonts/Chillax-Variable.woff2") format("woff2"),
+        url("/fonts/Chillax-Variable.woff") format("woff"),
+        url("/fonts/Chillax-Variable.ttf") format("truetype");
+    /*url("/fonts/Chillax-Variable.eot") format("")*/
+    font-weight: 200 700;
+    font-display: swap;
+    font-style: normal;
+}
+
+@theme {
+    --font-chillax: "Chillax-Variable";
+}
